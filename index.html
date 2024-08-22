@@ -6,178 +6,227 @@
     <title>Keyword Search with AI Suggestions</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;600&display=swap">
     <style>
+        /* Fuentes y Estilo General */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f4f8;
+            background-color: #f4f7f9;
             color: #333;
         }
+
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 40px auto;
             background: #ffffff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
         }
+
         h1 {
             font-family: 'Montserrat', sans-serif;
-            color: #0056b3;
+            color: #2c3e50;
             margin-bottom: 20px;
+            font-size: 2.5em;
+            text-align: center;
         }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #34495e;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             font-weight: 600;
             margin-bottom: 10px;
             color: #555;
         }
+
         input[type="text"] {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: 2px solid #ddd;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+
         input[type="text"]:focus {
-            border-color: #007BFF;
+            border-color: #3498db;
             outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
         }
+
         button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 6px;
-            background-color: #007BFF;
+            border-radius: 8px;
+            background-color: #3498db;
             color: #ffffff;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         button:hover {
-            background-color: #0056b3;
+            background-color: #2980b9;
         }
-        .results, .suggestions {
+
+        .results {
             margin-top: 20px;
-            text-align: left;
         }
-        .results p, .suggestions p {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+
+        .results .result-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
         }
-        .results h2, .suggestions h2 {
-            margin-top: 20px;
-            font-family: 'Montserrat', sans-serif;
-            color: #333;
-        }
+
         .results a {
-            color: #007BFF;
+            color: #3498db;
             text-decoration: none;
         }
+
         .results a:hover {
             text-decoration: underline;
         }
-        .summary-card {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
         }
-        .summary-card h3 {
-            margin: 0 0 10px;
-            font-size: 18px;
-            color: #0056b3;
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
         }
-        .summary-card p {
-            margin: 0;
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.25em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            input[type="text"], button {
+                font-size: 14px;
+                padding: 12px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Keyword Search with AI Suggestions</h1>
+        <h1>Scientific Keyword Search</h1>
         <div class="form-group">
             <label for="keyword">Enter a keyword:</label>
             <input type="text" id="keyword" placeholder="Example: Artificial Intelligence">
         </div>
         <button onclick="search()">Search</button>
         <div id="results" class="results"></div>
-        <div id="suggestions" class="suggestions"></div>
+        <div class="contact-info">
+            <p>Have questions or feedback? <a href="14349857@uagro.mx">14349857@uagro.mx</a></p>
+            <p>Support us on <a href="https://www.patreon.com/EASYLEARN323" target="_blank">Patreon</a></p>
+        </div>
     </div>
 
     <script>
         function search() {
-            var keyword = document.getElementById('keyword').value;
-            if (keyword.trim() === '') {
+            const keyword = document.getElementById('keyword').value.trim();
+
+            if (keyword === '') {
                 alert('Please enter a keyword.');
                 return;
             }
 
-            var searchQuery = encodeURIComponent(keyword);
-            var urls = {
-                'PubMed': 'https://pubmed.ncbi.nlm.nih.gov/?term=' + searchQuery,
-                'SpringerLink': 'https://link.springer.com/search?query=' + searchQuery,
-                'Elsevier': 'https://www.elsevier.com/en-xm/enx/elsevier-articles?searchTerm=' + searchQuery,
-                'Google Scholar': 'https://scholar.google.com/scholar?q=' + searchQuery
+            // Simulate fetching articles from different sources
+            simulateFetchArticles(keyword);
+        }
+
+        function simulateFetchArticles(keyword) {
+            // Define URLs for search engines with the query parameter and simulated result counts
+            const searchUrls = {
+                'PubMed': {
+                    url: 'https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100  // Simulated number of results
+                },
+                'SpringerLink': {
+                    url: 'https://link.springer.com/search?query=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100
+                },
+                'Elsevier': {
+                    url: 'https://www.elsevier.com/en-xm/en-xm/search-results?query=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100
+                },
+                'Google Scholar': {
+                    url: 'https://scholar.google.com/scholar?q=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100
+                },
+                'IEEE Xplore': {
+                    url: 'https://ieeexplore.ieee.org/search/searchresult.jsp?newsearch=true&queryText=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100
+                },
+                'JSTOR': {
+                    url: 'https://www.jstor.org/action/doBasicSearch?Query=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100
+                },
+                'Scopus': {
+                    url: 'https://www.scopus.com/search/form.uri?display=basic&query=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100
+                },
+                'ACM Digital Library': {
+                    url: 'https://dl.acm.org/action/doSearch?AllField=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100
+                },
+                'ScienceDirect': {
+                    url: 'https://www.sciencedirect.com/search?query=' + encodeURIComponent(keyword),
+                    count: Math.floor(Math.random() * 1000) + 100
+                }
             };
 
-            // Display search links
-            var resultsHtml = "<h2>Search results for '" + keyword + "':</h2>";
-            for (var site in urls) {
-                resultsHtml += "<div class='result-item'><p><strong>" + site + ":</strong> <a href='" + urls[site] + "' target='_blank'>" + urls[site] + "</a> - <span id='" + site + "-results'>Fetching results...</span></p></div>";
+            // Generate HTML for results
+            let resultsHtml = '';
+            for (const [source, data] of Object.entries(searchUrls)) {
+                resultsHtml += `<h2><a href='${data.url}' target='_blank'>${source}</a></h2>
+                                <p>Estimated number of results: ${data.count.toLocaleString()}</p>`;
             }
+
             document.getElementById('results').innerHTML = resultsHtml;
-
-            // Simulate fetching the number of results
-            simulateFetchResults(keyword);
-
-            // Call AI API to get article summaries
-            fetchArticleSummaries(keyword);
-        }
-
-        function simulateFetchResults(keyword) {
-            // Placeholder values for the number of results
-            var simulatedResults = {
-                'PubMed': '1,234 results',
-                'SpringerLink': '567 results',
-                'Elsevier': '890 results',
-                'Google Scholar': '4,321 results'
-            };
-
-            for (var site in simulatedResults) {
-                document.getElementById(site + '-results').innerText = simulatedResults[site];
-            }
-        }
-
-        function fetchArticleSummaries(keyword) {
-            // Placeholder for calling AI API to get article summaries
-            var apiEndpoint = 'https://api.example.com/getSummaries?query=' + encodeURIComponent(keyword);
-
-            fetch(apiEndpoint)
-                .then(response => response.json())
-                .then(data => {
-                    var summariesHtml = "<h2>AI Suggestions:</h2>";
-                    if (data.summaries && data.summaries.length > 0) {
-                        data.summaries.forEach(summary => {
-                            summariesHtml += "<div class='summary-card'><h3>" + summary.title + "</h3><p>" + summary.text + "</p></div>";
-                        });
-                    } else {
-                        summariesHtml += "<p>No summaries found.</p>";
-                    }
-                    document.getElementById('suggestions').innerHTML += summariesHtml;
-                })
-                .catch(error => {
-                    console.error('Error fetching summaries:', error);
-                });
         }
     </script>
 </body>
 </html>
-
