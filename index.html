@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keyword Search with AI Suggestions</title>
+    <title>Scientific Keyword Search with AI Suggestions</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Fuentes y Estilo General */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f1f3f4;
+            background-color: #e9ecef; /* Gris tenue de fondo */
             color: #333;
         }
 
@@ -79,63 +80,78 @@
             border-radius: 8px;
             border: 1px solid #e0e0e0;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            color: #333;
             margin-bottom: 20px;
+            position: relative;
+            background-color: #f9f9f9; /* Fondo de recuadro gris claro */
         }
 
         .result-item h2 {
+            font-family: 'Montserrat', sans-serif;
             font-size: 1.4em;
-            margin-top: 0;
+            margin-top: 20px; /* Menor separación entre íconos y títulos */
+            color: #333; /* Color predeterminado para el título */
         }
 
         .result-item p {
+            font-family: 'Roboto', sans-serif;
             font-size: 1em;
             color: #666;
         }
 
-        .result-item a {
-            color: #007bff;
-            text-decoration: none;
+        .result-item p span {
+            font-weight: bold;
+            color: #007bff; /* Resaltar el número de resultados */
         }
 
-        .result-item a:hover {
-            text-decoration: underline;
+        .result-item.pubmed {
+            background-color: #e8f5e9; /* Color verde claro */
+            border-color: #c8e6c9;
         }
 
-        .pubmed {
-            background-color: #d9edf7; /* Light blue */
+        .result-item.springer {
+            background-color: #fce4ec; /* Color rosa claro */
+            border-color: #f8bbd0;
         }
 
-        .springer {
-            background-color: #f5f5f5; /* Light gray */
+        .result-item.elsevier {
+            background-color: #e3f2fd; /* Color azul claro */
+            border-color: #bbdefb;
         }
 
-        .elsevier {
-            background-color: #eaf2f8; /* Light cyan */
+        .result-item.google-scholar {
+            background-color: #e8eaf6; /* Color morado claro */
+            border-color: #c5cae9;
         }
 
-        .google-scholar {
-            background-color: #f1f1f1; /* Slightly lighter gray */
+        .result-item.ieee {
+            background-color: #f3e5f5; /* Color morado pastel */
+            border-color: #e1bee7;
         }
 
-        .ieee {
-            background-color: #f9f9f9; /* Very light gray */
+        .result-item.jstor {
+            background-color: #ffecb3; /* Color amarillo claro */
+            border-color: #ffe082;
         }
 
-        .jstor {
-            background-color: #fefefe; /* Almost white */
+        .result-item.scopus {
+            background-color: #d1c4e9; /* Color lila claro */
+            border-color: #b39ddb;
         }
 
-        .scopus {
-            background-color: #e6f0ff; /* Pale blue */
+        .result-item.acm {
+            background-color: #f1f8e9; /* Color verde claro */
+            border-color: #dcedc8;
         }
 
-        .acm {
-            background-color: #f7f7f7; /* Light gray */
+        .result-item.sciencedirect {
+            background-color: #e0f7fa; /* Color aqua claro */
+            border-color: #b2ebf2;
         }
 
-        .sciencedirect {
-            background-color: #dff0d8; /* Pale green */
+        .result-item i {
+            font-size: 2em;
+            color: #007bff; /* Color de iconos */
+            margin-bottom: 15px; /* Menor separación entre íconos y título */
         }
 
         .footer {
@@ -153,106 +169,107 @@
         .footer a:hover {
             text-decoration: underline;
         }
-
-        .contact-info {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        /* Media Queries for Responsiveness */
-        @media (max-width: 768px) {
-            .result-item {
-                max-width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .search-bar input[type="text"], .search-bar button {
-                font-size: 14px;
-                padding: 10px;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Scientific Keyword Search</h1>
         <div class="search-bar">
-            <input type="text" id="keyword" placeholder="Example: Artificial Intelligence">
+            <input type="text" id="keyword" placeholder="Enter a keyword">
             <button onclick="search()">Search</button>
         </div>
         <div id="results" class="results"></div>
-
-        <div class="contact-info">
+        <div class="footer">
             <p>Have questions or feedback? <a href="mailto:14349857@uagro.mx">14349857@uagro.mx</a></p>
             <p>Support us on <a href="https://www.patreon.com/EASYLEARN323" target="_blank">Patreon</a></p>
         </div>
     </div>
 
     <script>
+        document.getElementById('keyword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                search();
+            }
+        });
+
         function search() {
             const keyword = document.getElementById('keyword').value.trim();
+
             if (keyword === '') {
                 alert('Please enter a keyword.');
                 return;
             }
+
+            // Simulate fetching articles from different sources
             simulateFetchArticles(keyword);
         }
 
         function simulateFetchArticles(keyword) {
+            // Define URLs for search engines with the query parameter and simulated result counts
             const searchUrls = {
                 'PubMed': {
                     url: 'https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'pubmed'
+                    class: 'pubmed',
+                    icon: 'fas fa-briefcase-medical'
                 },
                 'SpringerLink': {
                     url: 'https://link.springer.com/search?query=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'springer'
+                    class: 'springer',
+                    icon: 'fas fa-book'
                 },
                 'Elsevier': {
                     url: 'https://www.elsevier.com/en-xm/en-xm/search-results?query=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'elsevier'
+                    class: 'elsevier',
+                    icon: 'fas fa-book-reader'
                 },
                 'Google Scholar': {
                     url: 'https://scholar.google.com/scholar?q=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'google-scholar'
+                    class: 'google-scholar',
+                    icon: 'fas fa-search'
                 },
                 'IEEE Xplore': {
                     url: 'https://ieeexplore.ieee.org/search/searchresult.jsp?newsearch=true&queryText=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'ieee'
+                    class: 'ieee',
+                    icon: 'fas fa-microchip'
                 },
                 'JSTOR': {
                     url: 'https://www.jstor.org/action/doBasicSearch?Query=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'jstor'
+                    class: 'jstor',
+                    icon: 'fas fa-scroll'
                 },
                 'Scopus': {
                     url: 'https://www.scopus.com/search/form.uri?display=basic&query=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'scopus'
+                    class: 'scopus',
+                    icon: 'fas fa-book-open'
                 },
                 'ACM Digital Library': {
                     url: 'https://dl.acm.org/action/doSearch?AllField=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'acm'
+                    class: 'acm',
+                    icon: 'fas fa-database'
                 },
                 'ScienceDirect': {
                     url: 'https://www.sciencedirect.com/search?query=' + encodeURIComponent(keyword),
                     count: Math.floor(Math.random() * 1000) + 100,
-                    class: 'sciencedirect'
+                    class: 'sciencedirect',
+                    icon: 'fas fa-flask'
                 }
             };
 
+            // Generate HTML for results
             let resultsHtml = '';
             for (const [source, data] of Object.entries(searchUrls)) {
-                resultsHtml += `<div class="result-item ${data.class}">
+                resultsHtml += `<div class='result-item ${data.class}'>
+                                    <i class="${data.icon}"></i>
                                     <h2><a href='${data.url}' target='_blank'>${source}</a></h2>
-                                    <p>Estimated number of results: ${data.count.toLocaleString()}</p>
+                                    <p>Estimated number of results: <span>${data.count.toLocaleString()}</span></p>
                                 </div>`;
             }
 
@@ -261,3 +278,4 @@
     </script>
 </body>
 </html>
+
