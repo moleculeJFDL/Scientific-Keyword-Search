@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Search with AI Suggestions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;600&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: #0056b3;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #007BFF;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results, .suggestions {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .results p, .suggestions p {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .results h2, .suggestions h2 {
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+        }
+        .results a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .results a:hover {
+            text-decoration: underline;
+        }
+        .summary-card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .summary-card h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #0056b3;
+        }
+        .summary-card p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Keyword Search with AI Suggestions</h1>
+        <div class="form-group">
+            <label for="keyword">Enter a keyword:</label>
+            <input type="text" id="keyword" placeholder="Example: Artificial Intelligence">
+        </div>
+        <button onclick="search()">Search</button>
+        <div id="results" class="results"></div>
+        <div id="suggestions" class="suggestions"></div>
+    </div>
+
+    <script>
+        function search() {
+            var keyword = document.getElementById('keyword').value;
+            if (keyword.trim() === '') {
+                alert('Please enter a keyword.');
+                return;
+            }
+
+            var searchQuery = encodeURIComponent(keyword);
+            var urls = {
+                'PubMed': 'https://pubmed.ncbi.nlm.nih.gov/?term=' + searchQuery,
+                'SpringerLink': 'https://link.springer.com/search?query=' + searchQuery,
+                'Elsevier': 'https://www.elsevier.com/en-xm/enx/elsevier-articles?searchTerm=' + searchQuery,
+                'Google Scholar': 'https://scholar.google.com/scholar?q=' + searchQuery
+            };
+
+            // Display search links
+            var resultsHtml = "<h2>Search results for '" + keyword + "':</h2>";
+            for (var site in urls) {
+                resultsHtml += "<div class='result-item'><p><strong>" + site + ":</strong> <a href='" + urls[site] + "' target='_blank'>" + urls[site] + "</a> - <span id='" + site + "-results'>Fetching results...</span></p></div>";
+            }
+            document.getElementById('results').innerHTML = resultsHtml;
+
+            // Simulate fetching the number of results
+            simulateFetchResults(keyword);
+
+            // Call AI API to get article summaries
+            fetchArticleSummaries(keyword);
+        }
+
+        function simulateFetchResults(keyword) {
+            // Placeholder values for the number of results
+            var simulatedResults = {
+                'PubMed': '1,234 results',
+                'SpringerLink': '567 results',
+                'Elsevier': '890 results',
+                'Google Scholar': '4,321 results'
+            };
+
+            for (var site in simulatedResults) {
+                document.getElementById(site + '-results').innerText = simulatedResults[site];
+            }
+        }
+
+        function fetchArticleSummaries(keyword) {
+            // Placeholder for calling AI API to get article summaries
+            var apiEndpoint = 'https://api.example.com/getSummaries?query=' + encodeURIComponent(keyword);
+
+            fetch(apiEndpoint)
+                .then(response => response.json())
+                .then(data => {
+                    var summariesHtml = "<h2>AI Suggestions:</h2>";
+                    if (data.summaries && data.summaries.length > 0) {
+                        data.summaries.forEach(summary => {
+                            summariesHtml += "<div class='summary-card'><h3>" + summary.title + "</h3><p>" + summary.text + "</p></div>";
+                        });
+                    } else {
+                        summariesHtml += "<p>No summaries found.</p>";
+                    }
+                    document.getElementById('suggestions').innerHTML += summariesHtml;
+                })
+                .catch(error => {
+                    console.error('Error fetching summaries:', error);
+                });
+        }
+    </script>
+</body>
+</html>
+
