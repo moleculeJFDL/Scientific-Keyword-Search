@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6091563963735792"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scientific Keyword Search with AI Suggestions</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;600&display=swap">
+    <title>Scientific Keyword Search</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Fuentes y Estilo General */
+        /* Estilos Generales */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #e9ecef; /* Gris tenue de fondo */
+            background-color: #f0f0f0; /* Fondo gris claro */
             color: #333;
         }
 
@@ -23,17 +21,19 @@
             margin: 40px auto;
             padding: 20px;
             border-radius: 12px;
-            background: #ffffff;
+            background: #ffffff; /* Fondo blanco */
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            border: 1px solid #dcdcdc;
+            border: 1px solid #e0e0e0;
         }
 
         h1 {
             font-family: 'Montserrat', sans-serif;
-            color: #1e2a38;
+            color: #111; /* Gris muy oscuro */
             margin-bottom: 30px;
-            font-size: 2.6em;
+            font-size: 2.5em;
             text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .search-bar {
@@ -41,37 +41,52 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 30px;
+            background-color: #111; /* Gris muy oscuro */
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .search-bar input[type="text"] {
             flex: 1;
             padding: 15px;
-            border: 2px solid #007bff;
+            border: none;
             border-radius: 8px;
             font-size: 16px;
             margin-right: 10px;
+            background-color: #f5f5f5; /* Gris claro */
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .search-bar input[type="text"]:focus {
+            background-color: #ffffff; /* Fondo blanco */
+            color: #000;
+            outline: none;
         }
 
         .search-bar button {
             padding: 15px 20px;
             border: none;
             border-radius: 8px;
-            background-color: #007bff;
+            background-color: #ff4f4f; /* Rojo vibrante */
             color: #ffffff;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .search-bar button:hover {
-            background-color: #0056b3;
+            background-color: #cc0000; /* Rojo oscuro */
+            transform: scale(1.05);
         }
 
         .results {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            margin-bottom: 30px;
         }
 
         .result-item {
@@ -79,113 +94,275 @@
             min-width: 300px;
             max-width: 45%;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-            position: relative;
-            background-color: #f9f9f9; /* Fondo de recuadro gris claro */
+            background-color: #ffffff; /* Fondo blanco */
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .result-item:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
         }
 
         .result-item h2 {
             font-family: 'Montserrat', sans-serif;
             font-size: 1.4em;
-            margin-top: 20px; /* Menor separación entre íconos y títulos */
-            color: #333; /* Color predeterminado para el título */
+            margin-top: 0;
+            color: #111; /* Gris muy oscuro */
         }
 
         .result-item p {
             font-family: 'Roboto', sans-serif;
-            font-size: 1em;
+            font-size: 0.9em;
             color: #666;
         }
 
         .result-item p span {
             font-weight: bold;
-            color: #007bff; /* Resaltar el número de resultados */
+            color: #ff4f4f; /* Rojo vibrante */
         }
 
-        .result-item.pubmed {
-            background-color: #e8f5e9; /* Color verde claro */
-            border-color: #c8e6c9;
+        .advanced-search {
+            margin-bottom: 30px;
+            border: 1px solid #dcdcdc;
+            padding: 20px;
+            border-radius: 12px;
+            background: #ffffff; /* Fondo blanco */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .result-item.springer {
-            background-color: #fce4ec; /* Color rosa claro */
-            border-color: #f8bbd0;
+        .advanced-search h3 {
+            margin-top: 0;
+            color: #111; /* Gris muy oscuro */
+            font-size: 1.4em;
         }
 
-        .result-item.elsevier {
-            background-color: #e3f2fd; /* Color azul claro */
-            border-color: #bbdefb;
+        .advanced-search label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #333;
         }
 
-        .result-item.google-scholar {
-            background-color: #e8eaf6; /* Color morado claro */
-            border-color: #c5cae9;
+        .advanced-search input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            transition: border-color 0.3s;
         }
 
-        .result-item.ieee {
-            background-color: #f3e5f5; /* Color morado pastel */
-            border-color: #e1bee7;
+        .advanced-search input[type="text"]:focus {
+            border-color: #ff4f4f; /* Rojo vibrante */
+            outline: none;
         }
 
-        .result-item.jstor {
-            background-color: #ffecb3; /* Color amarillo claro */
-            border-color: #ffe082;
+        .advanced-search button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ff4f4f; /* Rojo vibrante */
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
-        .result-item.scopus {
-            background-color: #d1c4e9; /* Color lila claro */
-            border-color: #b39ddb;
+        .advanced-search button:hover {
+            background-color: #cc0000; /* Rojo oscuro */
+            transform: scale(1.05);
         }
 
-        .result-item.acm {
-            background-color: #f1f8e9; /* Color verde claro */
-            border-color: #dcedc8;
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .result-item.sciencedirect {
-            background-color: #e0f7fa; /* Color aqua claro */
-            border-color: #b2ebf2;
+        .pagination button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ff4f4f; /* Rojo vibrante */
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            margin: 0 5px;
         }
 
-        .result-item i {
-            font-size: 2em;
-            color: #007bff; /* Color de iconos */
-            margin-bottom: 15px; /* Menor separación entre íconos y título */
+        .pagination button:hover {
+            background-color: #cc0000; /* Rojo oscuro */
+        }
+
+        .feedback {
+            margin-top: 40px;
+            border: 1px solid #dcdcdc;
+            padding: 20px;
+            border-radius: 12px;
+            background: #ffffff; /* Fondo blanco */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback h3 {
+            margin-top: 0;
+            color: #111; /* Gris muy oscuro */
+            font-size: 1.4em;
+        }
+
+        .feedback textarea {
+            width: calc(100% - 20px);
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .feedback textarea:focus {
+            border-color: #ff4f4f; /* Rojo vibrante */
+            outline: none;
+        }
+
+        .feedback button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ff4f4f; /* Rojo vibrante */
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .feedback button:hover {
+            background-color: #cc0000; /* Rojo oscuro */
         }
 
         .footer {
             margin-top: 40px;
             text-align: center;
             font-size: 14px;
-            color: #555;
+            color: #666;
         }
 
         .footer a {
-            color: #007bff;
+            color: #ff4f4f; /* Rojo vibrante */
             text-decoration: none;
         }
 
         .footer a:hover {
             text-decoration: underline;
         }
+
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-color: #222; /* Gris oscuro */
+            color: #ddd; /* Gris claro */
+        }
+
+        .dark-mode .container {
+            background-color: #333; /* Gris oscuro */
+            border: 1px solid #444; /* Gris oscuro */
+        }
+
+        .dark-mode .search-bar {
+            background-color: #222; /* Gris oscuro */
+        }
+
+        .dark-mode .search-bar input[type="text"] {
+            background-color: #444; /* Gris más oscuro */
+            color: #ddd; /* Gris claro */
+        }
+
+        .dark-mode .search-bar button {
+            background-color: #d9534f; /* Rojo oscuro */
+        }
+
+        .dark-mode .result-item {
+            background-color: #333; /* Gris oscuro */
+            border: 1px solid #444; /* Gris oscuro */
+        }
+
+        .dark-mode .result-item p span {
+            color: #d9534f; /* Rojo oscuro */
+        }
+
+        .dark-mode .advanced-search {
+            background-color: #333; /* Gris oscuro */
+            border: 1px solid #444; /* Gris oscuro */
+        }
+
+        .dark-mode .advanced-search input[type="text"] {
+            border-color: #d9534f; /* Rojo oscuro */
+        }
+
+        .dark-mode .pagination button {
+            background-color: #d9534f; /* Rojo oscuro */
+        }
+
+        .dark-mode .feedback {
+            background-color: #333; /* Gris oscuro */
+            border: 1px solid #444; /* Gris oscuro */
+        }
+
+        .dark-mode .feedback textarea {
+            border-color: #d9534f; /* Rojo oscuro */
+        }
+
+        .dark-mode .footer a {
+            color: #d9534f; /* Rojo oscuro */
+        }
+
+        .dark-mode .dark-mode-toggle {
+            background-color: #444; /* Gris más oscuro */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Scientific Keyword Search</h1>
+
         <div class="search-bar">
             <input type="text" id="keyword" placeholder="Enter a keyword">
             <button onclick="search()">Search</button>
         </div>
+
         <div id="results" class="results"></div>
+
+        <div class="pagination" id="pagination"></div>
+
+        <div class="advanced-search">
+            <h3>Advanced Search</h3>
+            <label for="author">Author:</label>
+            <input type="text" id="author" placeholder="Author's name">
+            <label for="date">Date:</label>
+            <input type="text" id="date" placeholder="Publication date (YYYY-MM-DD)">
+            <label for="journal">Journal/Conference:</label>
+            <input type="text" id="journal" placeholder="Journal or conference name">
+            <button onclick="advancedSearch()">Search</button>
+        </div>
+
+        <div class="feedback">
+            <h3>Feedback</h3>
+            <textarea id="feedback" placeholder="Share your thoughts..."></textarea>
+            <button onclick="submitFeedback()">Submit Feedback</button>
+        </div>
+
         <div class="footer">
             <p>Have questions or feedback? <a href="mailto:14349857@uagro.mx">14349857@uagro.mx</a></p>
             <p>Support us on <a href="https://www.patreon.com/EASYLEARN323" target="_blank">Patreon</a></p>
         </div>
     </div>
+
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 
     <script>
         document.getElementById('keyword').addEventListener('keypress', function(e) {
@@ -196,18 +373,32 @@
 
         function search() {
             const keyword = document.getElementById('keyword').value.trim();
+            if (keyword === '') {
+                alert('Please enter a keyword.');
+                return;
+            }
+
+            // Simula la búsqueda de artículos
+            simulateFetchArticles(keyword);
+        }
+
+        function advancedSearch() {
+            const keyword = document.getElementById('keyword').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const date = document.getElementById('date').value.trim();
+            const journal = document.getElementById('journal').value.trim();
 
             if (keyword === '') {
                 alert('Please enter a keyword.');
                 return;
             }
 
-            // Simulate fetching articles from different sources
-            simulateFetchArticles(keyword);
+            // Aquí puedes agregar la lógica para realizar una búsqueda avanzada
+            alert(`Advanced search with keyword: ${keyword}, author: ${author}, date: ${date}, journal: ${journal}`);
         }
 
         function simulateFetchArticles(keyword) {
-            // Define URLs for search engines with the query parameter and simulated result counts
+            // Define URLs para motores de búsqueda con parámetros de consulta y conteos de resultados simulados
             const searchUrls = {
                 'PubMed': {
                     url: 'https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(keyword),
@@ -265,7 +456,7 @@
                 }
             };
 
-            // Generate HTML for results
+            // Genera HTML para resultados
             let resultsHtml = '';
             for (const [source, data] of Object.entries(searchUrls)) {
                 resultsHtml += `<div class='result-item ${data.class}'>
@@ -276,6 +467,25 @@
             }
 
             document.getElementById('results').innerHTML = resultsHtml;
+            document.getElementById('pagination').innerHTML = '<button onclick="loadMoreResults()">Load More Results</button>';
+        }
+
+        function loadMoreResults() {
+            // Simula la carga de más resultados
+            alert('Loading more results...');
+        }
+
+        function submitFeedback() {
+            const feedback = document.getElementById('feedback').value.trim();
+            if (feedback === '') {
+                alert('Please enter your feedback.');
+                return;
+            }
+            alert('Feedback submitted: ' + feedback);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
         }
     </script>
 </body>
